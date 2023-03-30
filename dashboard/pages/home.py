@@ -12,6 +12,7 @@ aide = pd.read_csv("data/aide_alimentaire.csv", delimiter=",")
 dispo = pd.read_csv("data/dispo_alimentaire.csv", delimiter=",")
 pop = pd.read_csv("data/population.csv", delimiter=",")
 inséc = pd.read_csv("data/sous_nutrition.csv", delimiter=",")
+df = pd.read_csv("data/df_merge.csv", delimiter=",", low_memory=False)
 
 
 #On remplace par la date intervalle

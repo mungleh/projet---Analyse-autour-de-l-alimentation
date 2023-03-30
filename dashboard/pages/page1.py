@@ -32,7 +32,12 @@ sous_nutrition_pourcentage = insecurite["Valeur"].value_counts(normalize=True).m
 
 
 layout = html.Div([
-    dcc.Dropdown(
+          html.Br(),
+         html.Hr(),
+                html.Div(["Choix de Date: ",
+             dcc.Input(id='my-input', value=2017, type='text')]),
+        html.Br(),
+  dcc.Dropdown(
         id='my-dropdown',
         options=[
             {'label': 2015, 'value': 2015},
@@ -49,25 +54,45 @@ layout = html.Div([
     Output('output-div', 'children'),
     [Input('my-dropdown', 'value')])
 
-def update_output(selected_value):
-    pop_year = pop.loc[pop['Année'] == selected_value]
+
+# @app.callback(
+
+
+#     Output(component_id='my-output', component_property='children'),
+#      Input(component_id='my-input', component_property='value')
+#  )
+
+
+# def update_output_div(input_value):
+#     return 'Output: {}'.format(input_value)
+
+def update_output(input_value):
+    pop_year = pop.loc[pop['Année'] == input_value]
     total = 0
     for value in pop_year['Valeur']:
         total += value
     pop_mondial_year = total / 1e3
 
-    if selected_value == 2017:
+    if input_value == 2017:
         insecurite_mondial_year = 535.7
-    elif selected_value == 2018:
-        insecurite_mondial_year = 789
-    elif selected_value == 2019:
+    elif input_value == 2013:
+        insecurite_mondial_year =  528.1
+    elif input_value == 2014:
+        insecurite_mondial_year = 523.5
+    elif input_value == 2015:
+        insecurite_mondial_year = 524.7
+    elif input_value == 2016:
+        insecurite_mondial_year = 528.6
+    elif input_value == 2018:
+        insecurite_mondial_year = 544.2
+    elif input_value == 2019:
         insecurite_mondial_year = 123
     else:
         insecurite_mondial_year = 0
     proportion_sous_nutrition = round((insecurite_mondial_year  / pop_mondial_year) * 100, 2)
 
 
-    filtered_data = get_filtered_data(selected_value)
+    filtered_data = get_filtered_data(input_value)
     # table = html.Table(
     #     [html.Tr([html.Th(col) for col in filtered_data.columns])] +
     #     [html.Tr([html.Td(filtered_data.iloc[i][col]) for col in filtered_data.columns]) for i in range(len(filtered_data))]
@@ -81,7 +106,7 @@ def update_output(selected_value):
     Q2['dispo_total_kcal']= Q2['Disponibilité alimentaire (Kcal/personne/jour)']*(Q2['population']* 1e3)
     nbre_total_pers_theorique = Q2['dispo_total_kcal'].sum() / 2500
     pourcentage = nbre_total_pers_theorique/ (  pop_mondial_year  * 1e6) * 100
-    pourcentage = "{:.0f}%".format(pourcentage)
+    pourcentage = "{:.2f}%".format(pourcentage)
 
     df_veg = filtered_data[['Zone','Disponibilité alimentaire (Kcal/personne/jour)', 'Origine']]
     df_veg = df_veg.loc[df_veg['Origine'] == 'vegetale']
@@ -90,10 +115,10 @@ def update_output(selected_value):
     Q3['dispo_total_kcal']= Q3['Disponibilité alimentaire (Kcal/personne/jour)']*(Q3['population']* 1e3)
     nbre_total_pers_theorique_veg = Q3['dispo_total_kcal'].sum() / 2500
     pourcentage_veg = nbre_total_pers_theorique_veg / ( pop_mondial_year* 1e6) * 100
-    pourcentage_veg = "{:.0f}%".format(pourcentage_veg )
+    pourcentage_veg = "{:.2f}%".format(pourcentage_veg )
 
 
-    return  html.Div('En {} proportion de la population en sous-nutrition est de {} , la disponibilité alimentaire des produits végétaux est {}'.format(selected_value, pourcentage, pourcentage_veg))
+    return  html.Div('En {}, la proportion de la population en sous-nutrition est de {} , la disponibilité alimentaire des produits végétaux est de {}'.format(input_value, pourcentage, pourcentage_veg))
 #  return  html.Div('La proportion de la population en sous-nutrition en {} ', html.Br(), 'est de {}% ', html.Br(),'t {}'.format(selected_value, pourcentage, pourcentage_veg))
 
 

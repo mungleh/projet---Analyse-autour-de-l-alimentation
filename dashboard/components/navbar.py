@@ -15,12 +15,11 @@ def Navbar():
     layout = html.Div([
         dbc.NavbarSimple(
             children=[
-                dbc.NavItem(dbc.NavLink("Page 1", href="/page1")),
-                dbc.NavItem(dbc.NavLink("Page 2", href="/page2")),
+                dbc.NavItem(dbc.NavLink("INPUT", href="/page1")),
             ] ,
             brand="ANALYSE ALIMENTAIRE MONDIAL",
             brand_href="/",
-            color="dark",
+            color= '#5D7963',
             dark=True,
         ),
     ])
